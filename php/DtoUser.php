@@ -1,20 +1,12 @@
 <?php
     class DtoUser{
 
-        private $userMail;
-        private $userType;
-        private $userName;
-        private $userSurname;
-        private $userState;
-      
-        public function SetUser($mail,$type,$name,$surname,$state){
-            $this->userMail=$mail;
-            $this->userType=$type;
-            $this->userName=$name;
-            $this->userSurname=$surname;
-            $this->userState=$state;
-            
-       }
+        public $userMail;
+        public $userType;
+        public $userName;
+        public $userSurname;
+        public $userState;
+        public $userId;
        public function GetUserMail()
        {
            return $this->userMail;
@@ -35,7 +27,11 @@
        {
            return $this->userState;
        }
-
+       public function SetUserId($id)
+       {
+            $this->userId=$id;
+          
+       }
        public function SetUserMail($mail)
        {
             $this->userMail=$mail;

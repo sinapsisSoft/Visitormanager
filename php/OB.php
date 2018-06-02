@@ -15,7 +15,12 @@
     }
     function CreateUser($userMail,$userType, $userName, $useRsurname, $useRstate){
        $result=null;
-       $this->dtoUser->SetUser($userMail,$userType, $userName, $useRsurname, $useRstate);
+       $this->dtoUser->userMail=$userMail;
+       $this->dtoUser->userType=$userType;
+       $this->dtoUser->userName=$userName;
+       $this->dtoUser->userSurname=$useRsurname;
+       $this->dtoUser->userState=$useRstate; 
+      
        
        $resutl=$this->daoUser->CreateUser($this->dtoUser);
         if($resutl==false){
@@ -25,19 +30,20 @@
             echo("Insert OK");
         }
     }
-    function SearchUser($userMail){
+    function SearchUser($userData,$typeSeach){
         $result=null;
-        $resutl=$this->daoUser->SearchUser($userMail);
-        if($resutl==false){
+        $result=$this->daoUser->SearchUser($userData,$typeSeach);
+                       
+        if($result==false){
             echo("Error");
-        }else{
-            $row = $resutl->fetch_array(MYSQLI_ASSOC);
-            echo($row["User_mail"]);
         }
+        return $result;
      }
 }
 
 $obj=new OB_General(); 
-$obj->CreateUser("dcasallas@gmail.com",1,"Felipe ","Casallas",1);
+$obj->CreateUser("diehei@gmail.com","2","Diego","Casallas","1");
+//$result=$obj->SearchUser("diehercasvan@outlook.com",1);
+//echo($result);
 
 ?>
