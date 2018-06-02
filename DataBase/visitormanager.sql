@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.8.0
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-05-2018 a las 15:30:12
--- Versión del servidor: 10.1.28-MariaDB
--- Versión de PHP: 7.1.10
+-- Tiempo de generación: 03-06-2018 a las 00:42:40
+-- Versión del servidor: 10.1.31-MariaDB
+-- Versión de PHP: 7.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -23,6 +23,31 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `visitormanager` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
 USE `visitormanager`;
+
+DELIMITER $$
+--
+-- Procedimientos
+--
+DROP PROCEDURE IF EXISTS `CreateUser`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CreateUser` (IN `userMail` VARCHAR(80), IN `UserType` INT(5), IN `UserName` VARCHAR(40), IN `UserSurname` VARCHAR(40), IN `UserState` INT(10))  BEGIN
+   INSERT INTO user(User_mail,User_type,User_id,User_name,User_surname,User_state) 
+   VALUES (userMail,UserType,NULL,UserName,UserSurname,UserState);
+   END$$
+
+DROP PROCEDURE IF EXISTS `SearchUser`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SearchUser` (IN `userData` VARCHAR(80), `typeSearch` INT(5))  BEGIN
+   IF typeSearch=0 THEN SELECT * FROM user WHERE User_mail LIKE CONCAT('%',userData, '%') AND User_state=1;
+   ELSEIF typeSearch=1 THEN SELECT * FROM user WHERE User_type=CAST(userData AS UNSIGNED) AND User_state=1;
+   ELSE SELECT * FROM user WHERE User_state=1;
+   END IF;
+   END$$
+
+DROP PROCEDURE IF EXISTS `UpdateStateUser`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateStateUser` (IN `UserId` INT(11))  BEGIN 
+UPDATE user SET User_state=2 WHERE User_id=UserId;
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -123,13 +148,21 @@ CREATE TABLE IF NOT EXISTS `state` (
   `State_type` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
   `State_descripction` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`State_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Truncar tablas antes de insertar `state`
 --
 
 TRUNCATE TABLE `state`;
+--
+-- Volcado de datos para la tabla `state`
+--
+
+INSERT INTO `state` (`State_id`, `State_name`, `State_type`, `State_descripction`) VALUES
+(1, 'Active', 'User', 'Estado activo en la plataforma'),
+(2, 'Inactive', 'User', 'Estado inactivo en la platafor');
+
 -- --------------------------------------------------------
 
 --
@@ -161,13 +194,21 @@ CREATE TABLE IF NOT EXISTS `type_user` (
   `Type_user` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `Type_user_description` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`Type_user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Truncar tablas antes de insertar `type_user`
 --
 
 TRUNCATE TABLE `type_user`;
+--
+-- Volcado de datos para la tabla `type_user`
+--
+
+INSERT INTO `type_user` (`Type_user_id`, `Type_user`, `Type_user_description`) VALUES
+(1, 'Administrator', 'Roll de administración de la p'),
+(2, 'Visitor', 'Roll de ingeniero de la plataf');
+
 -- --------------------------------------------------------
 
 --
@@ -185,13 +226,26 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`User_id`) USING BTREE,
   KEY `user_type_user` (`User_type`),
   KEY `user_state` (`User_state`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Truncar tablas antes de insertar `user`
 --
 
 TRUNCATE TABLE `user`;
+--
+-- Volcado de datos para la tabla `user`
+--
+
+INSERT INTO `user` (`User_mail`, `User_type`, `User_id`, `User_name`, `User_surname`, `User_state`) VALUES
+('diehercasvan@gmail.com', 1, 1, 'Diego', 'Casallas', 2),
+('diehercasvan@outlook.com', 1, 2, 'Hernando', 'Vanegas', 1),
+('dcasallas@outlook.com', 1, 3, 'Juan', 'Rodriguez', 1),
+('dcasallas@outlook.com', 1, 4, 'Juan', 'Rodriguez', 1),
+('dcasallas@outlook.com', 1, 5, 'Juan', 'Rodriguez', 1),
+('dcasallas@gmail.com', 1, 6, 'Felipe ', 'Casallas', 1),
+('dcasallas@gmail.com', 1, 7, 'Felipe ', 'Casallas', 1);
+
 -- --------------------------------------------------------
 
 --
