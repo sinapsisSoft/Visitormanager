@@ -39,11 +39,40 @@
         }
         return $result;
      }
+
+     function UpdateUserState($userId){
+        $result=null;
+        $this->dtoUser->userId=$userId;
+
+        $result=$this->daoUser->UpdateUserState($this->dtoUser);
+                       
+        if($result==false){
+            echo("Error");
+        }
+        return $result;
+     }
+     function UpdateUser($userId,$userType, $userName, $useRsurname, $userState){
+        $result=null;
+        $this->dtoUser->userId=$userId;
+        $this->dtoUser->userType=$userType;
+        $this->dtoUser->userName=$userName;
+        $this->dtoUser->userSurname=$useRsurname;
+        $this->dtoUser->userState=$userState; 
+       
+        
+        $resutl=$this->daoUser->UpdateUser($this->dtoUser);
+         if($resutl==false){
+             echo("Error");
+         }else{
+            
+             echo("Update OK");
+         }
+     }
 }
 
 $obj=new OB_General(); 
-$obj->CreateUser("diehei@gmail.com","2","Diego","Casallas","1");
-//$result=$obj->SearchUser("diehercasvan@outlook.com",1);
+//$obj->UpdateUser("1","2","Diego ","Casallas Vanegas","2");
+//$result=$obj->UpdateUserState('3');
 //echo($result);
 
 ?>
