@@ -1,29 +1,30 @@
 <?php
    include("connection.php"); 
-   include("DtoUser.php"); 
-    class DaoUser{
+   include("DtoBusiness.php"); 
+    class DaoBusiness{
 
         private $con;
         private $result;
-        private $daoUser;
+        private $dtoBusiness;
 
         function __construct(){
 
             $objConnection= new Connecction();
-            $daoUser=new DtoUser();
+            $dtoBusiness=new DtoBusiness();
             $this->con=$objConnection->Connect();
             
         }
 
-        function CreateUser($Objuser){
-            
+        function CreateBusiness($ObjBusiness){
+          
             $result=null;
             
             if($this->con->connect_errno){
                 echo("Error ");
             }else{
                 echo("OK ");
-                $result=$this->con->query("CALL CreateUser('".$Objuser->userMail."',".$Objuser->userType.",'".$Objuser->userName."','".$Objuser->userSurname."',".$Objuser->userState.")");
+                
+                $result=$this->con->query("CALL CreateBusiness('".$ObjBusiness->businessNit."','".$ObjBusiness->businessName."','".$ObjBusiness->businessAddress."','".$ObjBusiness->businessPhone."','".$ObjBusiness->businessMail."')");
                 if(!$result){
                     
                      $result=false; 

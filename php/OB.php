@@ -1,28 +1,28 @@
 <?php
    
-   include("DaoUser.php");
+   include("DaoBusiness.php");
    class OB_General{
 
     
-    private $dtoUser;
-    private $daoUser;
+    private $dtoBusiness;
+    private $daoBusiness;
     private $result;
     
     function __construct(){
 
-       $this->daoUser=new DaoUser();
-       $this->dtoUser=new DtoUser();
+       $this->daoBusiness=new DaoBusiness();
+       $this->dtoBusiness=new DtoBusiness();
     }
-    function CreateUser($userMail,$userType, $userName, $useRsurname, $useRstate){
+  
+    function CreateBusiness($businessNit,$businessName,$businessAddress, $businessPhone,  $businessMail){
        $result=null;
-       $this->dtoUser->userMail=$userMail;
-       $this->dtoUser->userType=$userType;
-       $this->dtoUser->userName=$userName;
-       $this->dtoUser->userSurname=$useRsurname;
-       $this->dtoUser->userState=$useRstate; 
-      
-       
-       $resutl=$this->daoUser->CreateUser($this->dtoUser);
+       $this->dtoBusiness->businessMail=$businessMail;
+       $this->dtoBusiness->businessPhone=$businessPhone;
+       $this->dtoBusiness->businessAddress=$businessAddress;
+       $this->dtoBusiness->businessName=$businessName;
+       $this->dtoBusiness->businessNit=$businessNit; 
+
+       $resutl=$this->daoBusiness->CreateBusiness($this->dtoBusiness);
         if($resutl==false){
             echo("Error");
         }else{
@@ -30,9 +30,9 @@
             echo("Insert OK");
         }
     }
-    function SearchUser($userData,$typeSeach){
+    function SearchBusiness($businessNit,$typeSeach){
         $result=null;
-        $result=$this->daoUser->SearchUser($userData,$typeSeach);
+        $result=$this->daoBusiness->SearchBusiness($businessNit,$typeSeach);
                        
         if($result==false){
             echo("Error");
@@ -51,6 +51,7 @@
         }
         return $result;
      }
+     
      function UpdateUser($userId,$userType, $userName, $useRsurname, $userState){
         $result=null;
         $this->dtoUser->userId=$userId;
@@ -74,5 +75,6 @@ $obj=new OB_General();
 //$obj->UpdateUser("1","2","Diego ","Casallas Vanegas","2");
 //$result=$obj->UpdateUserState('3');
 //echo($result);
-
+$obj->CreateBusiness("80859867-8","Sinapsis Soft 2","Calle 102 # 35 -45","7800733","info@sinapsissoft2.com");
+   
 ?>

@@ -1,10 +1,10 @@
 <?php
-    class Dtobusiness{
+    class DtoBusiness{
 
         public $businessMail;
         public $businessPhone;
         public $businessAddress;
-        public $businessName	;
+        public $businessName;
         public $businessNit;
         public $businessId;
         
@@ -57,7 +57,7 @@
        {
             $this->businessNit=$nit;
        }
-       public function GetBusinessId($id)
+       public function SetBusinessId($id)
        {
             $this->businessId=$id;
        }
