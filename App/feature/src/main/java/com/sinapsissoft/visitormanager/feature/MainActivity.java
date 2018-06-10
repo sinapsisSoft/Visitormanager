@@ -3,6 +3,8 @@ package com.sinapsissoft.visitormanager.feature;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,9 +14,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.sinapsissoft.visitormanager.feature.Adapter.VisitAdapter;
+import com.sinapsissoft.visitormanager.feature.Dto.DtoVisit;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private RecyclerView vRecyclerView;
+    private RecyclerView.Adapter vAdapterVisit;
+    private RecyclerView.LayoutManager vLayoutManager;
+    private List<DtoVisit> dtoVisits;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +52,30 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        loadView();
     }
 
+    public void loadView(){
+        vRecyclerView=(RecyclerView)findViewById(R.id.recyclerViewVisit);
+        vRecyclerView.setHasFixedSize(true);
+        //use a linear layout manager
+        vLayoutManager=new LinearLayoutManager(this);
+        vRecyclerView.setLayoutManager(vLayoutManager);
+        //Specify an adapter
+        vAdapterVisit=new VisitAdapter(loadData());
+        vRecyclerView.setAdapter(vAdapterVisit);
+
+    }
+
+    public List<DtoVisit> loadData(){
+
+        dtoVisits=new ArrayList<>();
+        dtoVisits.add(new DtoVisit("001","Sianapsis Soft","6/10/2018","20","1"));
+        dtoVisits.add(new DtoVisit("002","Sianapsis Soft","6/10/2018","50","1"));
+        dtoVisits.add(new DtoVisit("003","Sianapsis Soft","6/10/2018","40","1"));
+        dtoVisits.add(new DtoVisit("004","Sianapsis Soft","6/10/2018","90","1"));
+        return dtoVisits;
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
