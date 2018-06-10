@@ -1,10 +1,12 @@
 package com.sinapsissoft.visitormanager.feature;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,13 +17,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.sinapsissoft.visitormanager.feature.Adapter.VisitAdapter;
+import com.sinapsissoft.visitormanager.feature.ClassAppVisit.IntStartActivity;
 import com.sinapsissoft.visitormanager.feature.Dto.DtoVisit;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, IntStartActivity {
 
     private RecyclerView vRecyclerView;
     private RecyclerView.Adapter vAdapterVisit;
@@ -62,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         vLayoutManager=new LinearLayoutManager(this);
         vRecyclerView.setLayoutManager(vLayoutManager);
         //Specify an adapter
-        vAdapterVisit=new VisitAdapter(loadData());
+        vAdapterVisit=new VisitAdapter(loadData(),this);
         vRecyclerView.setAdapter(vAdapterVisit);
 
     }
@@ -71,9 +74,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         dtoVisits=new ArrayList<>();
         dtoVisits.add(new DtoVisit("001","Sianapsis Soft","6/10/2018","20","1"));
-        dtoVisits.add(new DtoVisit("002","Sianapsis Soft","6/10/2018","50","1"));
-        dtoVisits.add(new DtoVisit("003","Sianapsis Soft","6/10/2018","40","1"));
-        dtoVisits.add(new DtoVisit("004","Sianapsis Soft","6/10/2018","90","1"));
+        dtoVisits.add(new DtoVisit("002","Sianapsis Soft","6/10/2018","50","2"));
+        dtoVisits.add(new DtoVisit("003","Sianapsis Soft","6/10/2018","40","3"));
+        dtoVisits.add(new DtoVisit("004","Sianapsis Soft","6/10/2018","90","4"));
+        dtoVisits.add(new DtoVisit("005","Sianapsis Soft","6/10/2018","90","5"));
+        dtoVisits.add(new DtoVisit("006","Sianapsis Soft","6/10/2018","10","6"));
         return dtoVisits;
     }
     @Override
@@ -131,5 +136,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void callbackStartActivity() {
+        Log.i("Information","Ok");
+       Intent intent=new Intent(this, VisitActivity.class);
+        startActivity(intent);
     }
 }
