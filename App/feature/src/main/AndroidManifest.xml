@@ -11,7 +11,6 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data
                     android:host="sinapsissoft.com"
                     android:pathPattern="/.*"
@@ -19,21 +18,29 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".VisitActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".MainActivity"
-            >
+            android:parentActivityName="com.sinapsissoft.visitormanager.feature.MainActivity"
+            android:name="com.sinapsissoft.visitormanager.feature.VisitActivity">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="com.sinapsissoft.visitormanager.feature.MainActivity" />
+        </activity>
+        <activity
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName="com.sinapsissoft.visitormanager.feature.MainActivity"
+            android:name="com.sinapsissoft.visitormanager.feature.RequirementActivity">
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.sinapsissoft.visitormanager.feature.MainActivity" />
         </activity>
 
     </application>

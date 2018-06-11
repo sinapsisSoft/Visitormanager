@@ -12,7 +12,7 @@ public class RequirementActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_visit);
+        setContentView(R.layout.activity_requirement);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_Requirement);
         setSupportActionBar(toolbar);
 
