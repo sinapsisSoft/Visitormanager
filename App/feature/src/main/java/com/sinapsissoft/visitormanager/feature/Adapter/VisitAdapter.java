@@ -1,10 +1,11 @@
 package com.sinapsissoft.visitormanager.feature.Adapter;
 
 
-import android.content.Intent;
+
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,25 +16,22 @@ import android.widget.TextView;
 import com.sinapsissoft.visitormanager.feature.ClassAppVisit.IntStartActivity;
 import com.sinapsissoft.visitormanager.feature.Dto.DtoVisit;
 import com.sinapsissoft.visitormanager.feature.R;
-import com.sinapsissoft.visitormanager.feature.VisitActivity;
+
 
 import java.util.List;
 
-public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.ViewHolder> implements View.OnClickListener {
+public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.ViewHolder> {
 
     private List<DtoVisit> dtoVisits;
     private IntStartActivity intStartActivity;
-
     public VisitAdapter(List<DtoVisit> dto, IntStartActivity startActivity ){
         dtoVisits=dto;
         this.intStartActivity=startActivity;
     }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //create a new view
-
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_visit, parent, false);
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
@@ -41,14 +39,18 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.vImgDescription.setId(Integer.parseInt(dtoVisits.get(position).sId));
-        holder.vImgDescription.setOnClickListener(this);
+        holder.vImgDescription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intStartActivity.callbackStartActivity(v.getId());
+            }
+        });
         holder.vValueStatus.setText(dtoVisits.get(position).sState+"%");
         holder.vProgressBarState.setProgress(Integer.parseInt(dtoVisits.get(position).sState));
         holder.vTextDate.setText(dtoVisits.get(position).sDate);
         holder.vTextTitle.setText(dtoVisits.get(position).sTitle);
         holder.vTextCode.setText(dtoVisits.get(position).sCode);
     }
-
     @Override
     public int getItemCount() {
         return dtoVisits.size();
@@ -56,12 +58,6 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.ViewHolder> 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-    }
-
-    @Override
-    public void onClick(View v) {
-        intStartActivity.callbackStartActivity();
-
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{

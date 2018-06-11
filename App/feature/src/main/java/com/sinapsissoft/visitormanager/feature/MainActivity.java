@@ -139,8 +139,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void callbackStartActivity() {
-        Log.i("Information","Ok");
+    public void callbackStartActivity(int id) {
+        Log.i("Information","Ok"+id);
        Intent intent=new Intent(this, VisitActivity.class);
         startActivity(intent);
     }

@@ -86,6 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:gravity="center"
+                    android:padding="2dp"
                     app:srcCompat="@drawable/ic_visibility_black_24dp" />
             </LinearLayout>
         </LinearLayout>
