@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-06-2018 a las 00:42:40
+-- Tiempo de generación: 19-06-2018 a las 23:05:47
 -- Versión del servidor: 10.1.31-MariaDB
 -- Versión de PHP: 7.2.4
 
@@ -28,10 +28,26 @@ DELIMITER $$
 --
 -- Procedimientos
 --
+DROP PROCEDURE IF EXISTS `CreateBusiness`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CreateBusiness` (IN `businessNit` VARCHAR(20), IN `businessPhone` VARCHAR(20), IN `businessAddress` VARCHAR(30), IN `businessName` VARCHAR(30), IN `businessMail` VARCHAR(80))  BEGIN
+   INSERT INTO business(business_id,business_nit,business_name,business_address,business_phone,business_mail) 
+   VALUES (NULL,businessNit,businessName,businessAddress,businessPhone,businessMail);
+   END$$
+
 DROP PROCEDURE IF EXISTS `CreateUser`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `CreateUser` (IN `userMail` VARCHAR(80), IN `UserType` INT(5), IN `UserName` VARCHAR(40), IN `UserSurname` VARCHAR(40), IN `UserState` INT(10))  BEGIN
    INSERT INTO user(User_mail,User_type,User_id,User_name,User_surname,User_state) 
    VALUES (userMail,UserType,NULL,UserName,UserSurname,UserState);
+   END$$
+
+DROP PROCEDURE IF EXISTS `SearchBusiness`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SearchBusiness` (IN `businessData` VARCHAR(80), IN `typeSearch` INT(5))  BEGIN
+   IF typeSearch=0 THEN SELECT * FROM business WHERE business_mail=businessData;
+   ELSEIF typeSearch=1 THEN SELECT * FROM business WHERE business_mail LIKE CONCAT('%',businessData,'%'); 
+   ELSEIF typeSearch=2 THEN SELECT * FROM business WHERE business_name LIKE CONCAT('%',businessData,'%'); 
+   ELSEIF typeSearch=3 THEN SELECT * FROM business WHERE business_nit LIKE CONCAT('%',businessData,'%');
+   ELSE  SELECT * FROM business;
+   END IF;
    END$$
 
 DROP PROCEDURE IF EXISTS `SearchUser`$$
@@ -82,14 +98,24 @@ CREATE TABLE IF NOT EXISTS `business` (
   `business_address` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   `business_phone` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `business_mail` varchar(80) COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`business_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  PRIMARY KEY (`business_id`),
+  UNIQUE KEY `business_nit` (`business_nit`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Truncar tablas antes de insertar `business`
 --
 
 TRUNCATE TABLE `business`;
+--
+-- Volcado de datos para la tabla `business`
+--
+
+INSERT DELAYED INTO `business` (`business_id`, `business_nit`, `business_name`, `business_address`, `business_phone`, `business_mail`) VALUES
+(1, '80859867-7', '7800733', 'Calle 102 # 35 -45', 'Sinapsis Soft', 'info@sinapsissoft.co'),
+(3, '80859867-9', '7800733', 'Calle 102 # 35 -45', 'Sinapsis Soft 2', 'info@sinapsissoft1.co'),
+(4, '80859867-8', '7800733', 'Calle 102 # 35 -45', 'Sinapsis Soft 2', 'info@sinapsissoft2.com');
+
 -- --------------------------------------------------------
 
 --
@@ -159,7 +185,7 @@ TRUNCATE TABLE `state`;
 -- Volcado de datos para la tabla `state`
 --
 
-INSERT INTO `state` (`State_id`, `State_name`, `State_type`, `State_descripction`) VALUES
+INSERT DELAYED INTO `state` (`State_id`, `State_name`, `State_type`, `State_descripction`) VALUES
 (1, 'Active', 'User', 'Estado activo en la plataforma'),
 (2, 'Inactive', 'User', 'Estado inactivo en la platafor');
 
@@ -205,7 +231,7 @@ TRUNCATE TABLE `type_user`;
 -- Volcado de datos para la tabla `type_user`
 --
 
-INSERT INTO `type_user` (`Type_user_id`, `Type_user`, `Type_user_description`) VALUES
+INSERT DELAYED INTO `type_user` (`Type_user_id`, `Type_user`, `Type_user_description`) VALUES
 (1, 'Administrator', 'Roll de administración de la p'),
 (2, 'Visitor', 'Roll de ingeniero de la plataf');
 
@@ -237,7 +263,7 @@ TRUNCATE TABLE `user`;
 -- Volcado de datos para la tabla `user`
 --
 
-INSERT INTO `user` (`User_mail`, `User_type`, `User_id`, `User_name`, `User_surname`, `User_state`) VALUES
+INSERT DELAYED INTO `user` (`User_mail`, `User_type`, `User_id`, `User_name`, `User_surname`, `User_state`) VALUES
 ('diehercasvan@gmail.com', 1, 1, 'Diego', 'Casallas', 2),
 ('diehercasvan@outlook.com', 1, 2, 'Hernando', 'Vanegas', 1),
 ('dcasallas@outlook.com', 1, 3, 'Juan', 'Rodriguez', 1),

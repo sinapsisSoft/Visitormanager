@@ -56,7 +56,11 @@ public class RequirementActivity extends AppCompatActivity implements View.OnCli
     private void attachImage(){
       try {
 
-          Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+          Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+          //intent.setAction(Intent.ACTION_GET_CONTENT);
+          startActivityForResult(intent,1);
+
           if (intent.resolveActivity(getPackageManager()) != null) {
               //Device has no app that handles gallery intent
               imgBtnAttachImage.setVisibility(View.GONE);
@@ -101,11 +105,13 @@ public class RequirementActivity extends AppCompatActivity implements View.OnCli
     protected void onActivityResult(int requestCode,int resultCode,Intent data){
 
 
-            if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-                Bundle extras = data.getExtras();
-                Bitmap imageBitmap = (Bitmap) extras.get("data");
-                imgViewResult.setImageBitmap(imageBitmap);
-            }
+
+        if(resultCode == RESULT_OK)
+        {
+            Uri selectedImage = data.getData();
+
+            //UnityPlayer.UnitySendMessage("Main Camera", "OpenImage", getRealPathFromURI(selectedImage));
+        }
 
 
     }
