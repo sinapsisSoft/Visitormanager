@@ -1,4 +1,9 @@
 <?php
+     /*
+      Autor:DIEGO CASALLAS
+      Description:This class is for the administrator of the connection
+      Date: 09/07/2018
+    */
     require('dtoConnection.php');
    class Connecction{
 
@@ -18,9 +23,11 @@
      }
 
      function Connect(){
-
-        $con=new mysqli($this->server,$this->user,$this->password,$this->dataBase);
         
+        $con=new mysqli($this->server,$this->user,$this->password,$this->dataBase);
+        if ($con->connect_error) {
+          die('Error de conexión: ' . $con->connect_error);
+      }
         return $con;
      }
      function Close(){
@@ -30,6 +37,8 @@
      }
 
    }
+   $obj=new Connecction();
+   $obj->Connect();
    
   
 
