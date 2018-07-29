@@ -22,7 +22,7 @@ import java.util.List;
 
 public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.ViewHolder> {
 
-    private List<DtoVisit> dtoVisits;
+    private List<DtoVisit> dtoVisits ;
     private IntStartActivity intStartActivity;
     public VisitAdapter(List<DtoVisit> dto, IntStartActivity startActivity ){
         dtoVisits=dto;
