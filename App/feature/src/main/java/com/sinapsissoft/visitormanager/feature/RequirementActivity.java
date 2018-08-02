@@ -22,7 +22,9 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -83,24 +85,62 @@ public class RequirementActivity extends AppCompatActivity implements View.OnCli
         Log.e("ERROR",takePictureIntent+"");
         if (getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }*/
+        try{
+            //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            //String imageFileName =  "prueba.jpg";
+            //File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            //String pictureImagePath = storageDir.getAbsolutePath() + "/" + imageFileName;
+            //String pictureImagePath =  "Images/" + imageFileName;
+
+            //File file = new File(pictureImagePath);
+            //String authorities = getApplicationContext().getPackageName() + ".fileprovider";
+
+            /*if(file.exists()){
+                Log.e("Existe file","Existe file");
+            }else{
+                Log.e("NO Existe file","NO Existe file");
+                file.mkdirs();
+            }*/
+            //com.sinapsissoft.visitormanager
+            File imagePath =  new File(this.getBaseContext().getFilesDir(),"images");
+            File newFile = new File(imagePath,"prueba.jpg");
+
+            String flPrueba = createFile(R.drawable.ic_menu_send);
+            Uri contextUri = FileProvider.getUriForFile(this.getBaseContext(),"com.sinapsissoft.visitormanager.fileprovider",new File(flPrueba));
+            //Uri outputFileUri = FileProvider.getUriForFile(getApplicationContext(), authorities, file);
+
+            Intent CameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            CameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, contextUri);
+            CameraIntent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
+            //CameraIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            startActivityForResult(CameraIntent, 5);
+        }catch (Exception e){
+            e.printStackTrace();
+            Log.e("ERROR",e.getMessage());
         }
-*/      String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = timeStamp + ".jpg";
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        String pictureImagePath = storageDir.getAbsolutePath() + "/" + imageFileName;
 
-        File file = new File(pictureImagePath);
-
-        Uri outputFileUri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getApplicationContext().getPackageName() + ".provider", file);
-
-        Intent CameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        CameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-        CameraIntent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
-        CameraIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-        startActivityForResult(CameraIntent, 5);
 
     }
+    private String createFile(int resId){
+
+        Bitmap bm = BitmapFactory.decodeResource(getResources(),resId);
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/"+resId+".jpg";
+        File fl = new File(path);
+
+        try{
+            OutputStream ou = new FileOutputStream(fl);
+            bm.compress(Bitmap.CompressFormat.JPEG,100 ,ou);
+            ou.flush();
+            ou.close();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return fl.getPath();
+    }
+
     @Override
     protected void onActivityResult(int requestCode,int resultCode,Intent data){
 
